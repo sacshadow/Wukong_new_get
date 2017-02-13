@@ -34,8 +34,6 @@ public class UnitBehaviour : MonoBehaviour {
 		return uaction.reference.name;
 	}
 	
-	
-	
 	public virtual void PlayAction(string actionName) {
 		PlayAction(uaction[actionName]);
 	}
@@ -44,11 +42,13 @@ public class UnitBehaviour : MonoBehaviour {
 		if(crtAction != null && !crtAction.CanSwitch(uaction))
 			return;
 		
-		
+		crtAction = uaction;
+		crtAction.Active();
 	}
 	
 	public virtual void Stop() {
 		StopAllCoroutines();
+		if(crtAction != null) crtAction.Stop();
 		crtAction = null;
 	}
 	
