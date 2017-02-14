@@ -7,6 +7,8 @@ public class UnitBehaviour : MonoBehaviour {
 	
 	public Dictionary<string, UActionBase> uaction;
 	
+	public UnitBasic unitBasic;
+	
 	public UActionBase defaultAction, crtAction, nextAction;
 	public float lastInputTime = 0;
 	
@@ -39,9 +41,13 @@ public class UnitBehaviour : MonoBehaviour {
 	}
 	
 	public virtual void PlayAction(UActionBase uaction) {
-		if(crtAction != null && !crtAction.CanSwitch(uaction))
-			return;
-		
+		if(crtAction != null) {
+			if(!crtAction.CanSwitch(uaction))
+				return;
+			else
+				crtAction.Stop();
+		}
+		StopAllCoroutines();
 		crtAction = uaction;
 		crtAction.Active();
 	}
@@ -52,7 +58,7 @@ public class UnitBehaviour : MonoBehaviour {
 		crtAction = null;
 	}
 	
-	public virtual void Reset() {
+	public virtual void ResetAction() {
 		Stop();
 		PlayAction(defaultAction);
 	}
